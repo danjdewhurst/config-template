@@ -1,0 +1,27 @@
+# Your Homebrew packages. install.sh installs what's missing and upgrades nothing.
+# Record what you have with:
+#   brew bundle dump --file=macos/Brewfile --force --no-vscode
+# A dump drops `trusted: true` from third-party taps, so add it back by hand.
+
+# Shell
+brew "bash"
+brew "eza"
+brew "fzf"
+brew "zoxide"
+
+# Tools that agents use a lot
+brew "ast-grep"
+brew "fd"
+brew "gh"
+brew "git"
+brew "git-lfs"
+brew "jq"
+brew "mise"
+brew "ripgrep"
+brew "shellcheck"
+brew "tmux"
+brew "yq"
+
+# Apps and fonts
+cask "font-fira-code-nerd-font"
+cask "ghostty"

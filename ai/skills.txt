@@ -1,0 +1,6 @@
+# Skills installed with the skills CLI (https://skills.sh) rather than kept in
+# ai/skills/. One per line: <package> <skill name>.
+# install.sh installs any that are missing. Update them with: bunx skills update -g
+#
+# An example. Delete it or add your own:
+forjd/better-writing better-writing

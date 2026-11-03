@@ -1,0 +1,21 @@
+# Your desktop's SSH config, linked to ~/.ssh/config on macOS.
+# Keep private keys out of this repo: they stay in ~/.ssh.
+
+# Files for this machine only, such as tools that add their own hosts. Include
+# must come before any Host block to apply to every host.
+Include ~/.ssh/config.d/*
+
+Host *
+  SetEnv TERM=xterm-256color
+
+# An example server over Tailscale. Use its MagicDNS name or Tailscale IP.
+# Host my-server
+#   HostName my-server.<tailnet>.ts.net
+#   User me
+#   # Ctrl+V image paste in Claude Code on the server. See clipboard/.
+#   RemoteForward 127.0.0.1:18339 127.0.0.1:18339
+
+# An example VM behind a Tailscale subnet router.
+# Host my-vm
+#   HostName 10.0.0.10
+#   User ubuntu

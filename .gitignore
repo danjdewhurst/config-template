@@ -1,0 +1,18 @@
+# Secrets — never commit, even in a private repo
+id_*
+!id_*.pub
+*.pem
+*.key
+*.p12
+*.pfx
+.env
+.env.*
+*secret*
+*token*
+known_hosts*
+
+# OS
+.DS_Store
+
+# Rendered per machine by ai/build.sh
+ai/build/

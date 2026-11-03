@@ -1,0 +1,28 @@
+# Lints the shell scripts and scans every commit for secrets, on each push.
+name: Check
+
+on:
+  push:
+  pull_request:
+
+jobs:
+  shellcheck:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      # shellcheck is preinstalled on the runner. Warnings and errors fail the
+      # job; info-level notes, like unfollowed `source` paths, don't.
+      - run: shellcheck --version && shellcheck -S warning install.sh install.conf ai/build.sh scripts/refresh.sh shell/bashrc clipboard/xclip
+
+  gitleaks:
+    runs-on: ubuntu-latest
+    env:
+      GITLEAKS_VERSION: 8.30.1
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+      # The binary rather than gitleaks-action, which needs a licence key.
+      - run: |
+          curl -fsSL "https://github.com/gitleaks/gitleaks/releases/download/v${GITLEAKS_VERSION}/gitleaks_${GITLEAKS_VERSION}_linux_x64.tar.gz" | tar -xz gitleaks
+          ./gitleaks git . --no-banner --redact -v

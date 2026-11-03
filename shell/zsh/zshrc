@@ -1,0 +1,64 @@
+#
+# Executes commands at the start of an interactive session.
+# Based on prezto's runcoms/zshrc by Sorin Ionescu.
+#
+
+# Completion paths go in before prezto, whose completion module runs compinit
+# once for all of them. Adding them later would need a second compinit.
+fpath=(
+  "${HOMEBREW_PREFIX:-/opt/homebrew}/share/zsh/site-functions"
+  "$HOME/.cache/zsh/completions"
+  $fpath
+)
+
+# codex's completion script, cached rather than generated on every start.
+# Regenerated when the codex binary is newer than the cache.
+if (( $+commands[codex] )); then
+  _codex_comp="$HOME/.cache/zsh/completions/_codex"
+  if [[ ! -s "$_codex_comp" || "$commands[codex]" -nt "$_codex_comp" ]]; then
+    mkdir -p "${_codex_comp:h}"
+    codex completion zsh >| "$_codex_comp" 2>/dev/null
+  fi
+  unset _codex_comp
+fi
+
+# Source Prezto.
+if [[ -s "${ZDOTDIR:-$HOME}/.zprezto/init.zsh" ]]; then
+  source "${ZDOTDIR:-$HOME}/.zprezto/init.zsh"
+fi
+
+# Optional tools. Each line does nothing if the tool isn't installed.
+if (( $+commands[zoxide] )); then
+  eval "$(zoxide init zsh)"
+  alias cd="z"
+fi
+(( $+commands[eza] )) && alias ls="eza --icons=always"
+
+alias proj="cd ~/Projects"
+
+# Mise
+(( $+commands[mise] )) && eval "$(mise activate zsh)"
+
+# PATH. path is tied to PATH, and typeset -U drops any entry already present,
+# so re-sourcing this file or a tool's own installer can't add duplicates.
+# Earlier entries win. Tool installers like to append PATH lines to this file:
+# move them into this list instead, with $HOME rather than your home path.
+export PNPM_HOME="$HOME/Library/pnpm"
+typeset -U path
+path=(
+  "$HOME/.local/bin"
+  "$PNPM_HOME/bin"
+  "$HOME/.bun/bin"
+  $path
+)
+
+# Installer env scripts. Each is optional, so a fresh machine without the tool
+# doesn't print an error on every new shell.
+for _f in "$HOME/.local/bin/env" "$HOME/.bun/_bun"; do
+  [[ -s "$_f" ]] && source "$_f"
+done
+unset _f
+
+# This machine's own additions, not tracked here. install.sh writes the
+# `claude` alias there, because the bash path differs per machine.
+[[ -s "$HOME/.zshrc.local" ]] && source "$HOME/.zshrc.local"

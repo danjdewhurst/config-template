@@ -1,0 +1,28 @@
+#!/bin/sh
+# xclip shim for headless Linux boxes: Claude Code reads a pasted image with
+# `xclip -selection clipboard -t TARGETS -o` and then `-t image/png -o`. Both
+# are answered from the Mac clipboard, which clipboard/image-server.py serves
+# through the RemoteForward in the Mac's ssh/config. Anything else goes to a real
+# xclip if there is one, or fails so Claude Code falls back (OSC 52 for copy).
+
+URL=http://127.0.0.1:18339/png
+
+real() {
+  [ -x /usr/bin/xclip ] && exec /usr/bin/xclip "$@"
+  exit 1
+}
+
+case " $* " in
+  *" -o "*) ;;
+  *) real "$@" ;;
+esac
+
+case " $* " in
+  *" -t TARGETS "*)
+    curl -fs --max-time 5 -o /dev/null "$URL" && { echo image/png; exit 0; }
+    ;;
+  *" -t image/png "*)
+    curl -fs --max-time 5 "$URL" && exit 0
+    ;;
+esac
+real "$@"

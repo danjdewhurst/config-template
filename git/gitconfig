@@ -1,0 +1,28 @@
+# Your global git config, linked to ~/.gitconfig. Shared by every machine.
+[user]
+	# Change these to your own name and email. GitHub's noreply address
+	# (Settings > Emails) keeps your real email out of public commits.
+	name = Your Name
+	email = you@users.noreply.github.com
+[init]
+	defaultBranch = main
+[pull]
+	rebase = true
+# gh is looked up on PATH, so the same line works on macOS (Homebrew) and Linux.
+# gh hands out expiring tokens (install.sh enables them). git 2.46 or newer lets
+# gh mark them as not to be cached, so no other helper can reuse an expired one.
+[credential "https://github.com"]
+	helper =
+	helper = !gh auth git-credential
+[credential "https://gist.github.com"]
+	helper =
+	helper = !gh auth git-credential
+[filter "lfs"]
+	clean = git-lfs clean -- %f
+	smudge = git-lfs smudge -- %f
+	process = git-lfs filter-process
+	required = true
+# Machine-specific settings, such as a work email or a signing key, not tracked
+# here. Write them with: git config --file ~/.gitconfig.local <key> <value>
+[include]
+	path = ~/.gitconfig.local
