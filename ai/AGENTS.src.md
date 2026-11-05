@@ -41,10 +41,15 @@ When I ask for a pull request:
 
 1. Work on a branch, not the default branch.
 2. Open the PR as ready for review, unless I ask for a draft.
-3. Wait for CI. Fix what fails and push again.
-4. Read the review comments. Fix the ones that are correct and in scope, and reply to each with the commit that fixes it or why you didn't.
-5. Don't merge unless I ask you to.
-6. End with the PR link, what you fixed, and what you left open.
+3. Review the PR with subagents, if your agent has them:
+   - Read the diff and pick 1 to 5 review focuses that fit it, for example correctness, security, tests, performance or docs accuracy.
+   - Always include correctness. Add another focus only when the diff can break that area. Judge by what the change can break, not by its size, and use correctness alone for a docs-only change.
+   - Start one subagent per focus, all at once. Give each one the repo, the PR number and its focus, but not your own reasoning or what you expect it to find.
+   - Tell them to report findings only, and not to change files, push, or comment on the PR.
+4. Wait for CI and the review subagents. Fix what fails and push again.
+5. Read the findings and the review comments. Fix the ones that are correct and in scope, and reply to each PR comment with the commit that fixes it or why you didn't.
+6. Don't merge unless I ask you to.
+7. End with the PR link, the focuses you picked, what you fixed, and what you left open.
 
 <!--
   A block between a tag and its closing tag, each on its own line, goes only to
