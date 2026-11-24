@@ -62,12 +62,13 @@ The template ships two examples, `hosts/my-laptop.md` and `hosts/my-server.md`. 
 | Skill | What it does |
 |---|---|
 | `infra` | Points agents at this repo's notes when a task touches your machines or network. Edit its `description` to list your machine names |
+| `best-idea` | Slash command only (`/best-idea`, or `$best-idea` in Codex): writes 10 ideas for the project, then three fresh judge subagents cut them to 5, then 3, then rank the last 3. Shows the winner and stops, unless you add `--build` (build and commit in a new worktree) or `--ship` (also a PR) |
 | `ship` | Slash command only (`/ship`, or `$ship` in Codex): take your own recommendations, ask nothing, open a PR |
 | `better-writing` | An example external skill, from [forjd/better-writing](https://github.com/forjd/better-writing), listed in `skills.txt` |
 
 `install.sh` installs anything in `skills.txt` that's missing, with `bunx skills add -g`. The CLI keeps one copy in `~/.agents/skills`, which Codex reads directly, and links it into `~/.claude/skills`. If bun is missing, it installs it with the official installer from bun.sh. To update those skills, run `bunx skills update -g`.
 
-To add a skill kept in this repo, add a directory under `skills/` and re-run `install.sh`. Then run `git pull && ./install.sh` on each other machine. `git pull` updates skills that are already linked, but only `install.sh` links a new one. To make a skill run only when you name it, set `disable-model-invocation: true` in its `SKILL.md` front matter for Claude, and add `agents/openai.yaml` with `policy.allow_implicit_invocation: false` for Codex. `skills/ship` has both. To remove a skill, delete the directory and re-run. The links go with it. Skills an agent installed for itself aren't touched.
+To add a skill kept in this repo, add a directory under `skills/` and re-run `install.sh`. Then run `git pull && ./install.sh` on each other machine. `git pull` updates skills that are already linked, but only `install.sh` links a new one. To make a skill run only when you name it, set `disable-model-invocation: true` in its `SKILL.md` front matter for Claude, and add `agents/openai.yaml` with `policy.allow_implicit_invocation: false` for Codex. `skills/ship` and `skills/best-idea` have both. To remove a skill, delete the directory and re-run. The links go with it. Skills an agent installed for itself aren't touched.
 
 ## Add an agent
 
