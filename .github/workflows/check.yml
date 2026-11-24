@@ -12,7 +12,7 @@ jobs:
       - uses: actions/checkout@v4
       # shellcheck is preinstalled on the runner. Warnings and errors fail the
       # job; info-level notes, like unfollowed `source` paths, don't.
-      - run: shellcheck --version && shellcheck -S warning install.sh install.conf ai/build.sh scripts/refresh.sh shell/bashrc clipboard/xclip
+      - run: shellcheck --version && shellcheck -S warning install.sh install.conf ai/build.sh scripts/refresh.sh shell/bashrc clipboard/xclip ai/skills/*/*.sh && python3 -m py_compile ai/skills/*/*.py
 
   gitleaks:
     runs-on: ubuntu-latest
